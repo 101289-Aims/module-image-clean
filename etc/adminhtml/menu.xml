@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Aimsinfosoft
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the aimsinfosoft.com license that is
+ * available through the world-wide-web at this URL:
+ * https://www.aimsinfosoft.com/LICENSE.txt
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this extension to newer
+ * version in the future.
+ *
+ * @category    Aimsinfosoft
+ * @package     Aimsinfosoft_Imageclean
+ * @copyright   Copyright (c) Aimsinfosoft (https://www.aimsinfosoft.com)
+ * @license     https://www.aimsinfosoft.com/LICENSE.txt
+ */ -->
+ 
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+ <!--  <menu>   
+		<add id="Aimsinfosoft_Imageclean::imagecleandata" resource="Aimsinfosoft_Imageclean::imagecleandata" module="Aimsinfosoft_Imageclean" title="Image Clean" sortOrder="20" action="imageclean/imageclean/index" parent="Aimsinfosoft_Imageclean::aimsinfosoft"/>
+   </menu>	 -->
+
+   <menu>
+        <add id="Aimsinfosoft_Imageclean::imageclean" title="Aimsinfosoft" module="Aimsinfosoft_Imageclean" sortOrder="20" resource="Aimsinfosoft_Imageclean::imagecleandata"/>
+        <add id="Aimsinfosoft_Imageclean::imagecleandata" title="Product Image Clean" module="Aimsinfosoft_Imageclean" sortOrder="10" action="imageclean/imageclean/index" resource="Aimsinfosoft_Imageclean::imagecleandata" parent="Aimsinfosoft_Imageclean::imageclean"/> 
+        <add id="Aimsinfosoft_Imageclean::categoryimagecleandata" title="Category Image Clean" module="Aimsinfosoft_Imageclean" sortOrder="20" action="imageclean/imageclean/categoryindex" resource="Aimsinfosoft_Imageclean::categoryimagecleandata" parent="Aimsinfosoft_Imageclean::imageclean"/> 		
+    </menu>	
+</config>
