@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -22,19 +23,31 @@
 namespace Aimsinfosoft\Imageclean\Model;
 
 use Magento\Framework\Model\AbstractModel;
+use Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean as CategoryClean;
 
-class CategoryImageclean extends AbstractModel implements \Magento\Framework\DataObject\IdentityInterface {
+/**
+ * Class CategoryImageclean
+ *
+ * @package Aimsinfosoft\Imageclean\Model
+ */
+class CategoryImageclean extends AbstractModel implements \Magento\Framework\DataObject\IdentityInterface
+{
 
-	const CACHE_TAG = 'imageclean_id';
+    public const CACHE_TAG = 'imageclean_id';
 
+    /**
+     * @param \Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean
+     */
     protected function _construct()
-	{
+    {
         $this->_init('Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean');
     }
 
-	public function getIdentities()
+    /**
+     * Get Identities
+     */
+    public function getIdentities()
     {
         return [self::CACHE_TAG . '_' . $this->getId()];
     }
-
 }

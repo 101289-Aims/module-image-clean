@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -26,23 +27,32 @@ use Magento\Framework\View\Element\UiComponentFactory;
 use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 
+/**
+ * Class Categorydeleteimage
+ *
+ * @package Aimsinfosoft\Imageclean\Ui\Component\Listing\Column
+ */
 class Categorydeleteimage extends Column
 {
-	const ROW_EDIT_URL = 'imageclean/imageclean/deletecategory';
-	
-	protected $_urlBuilder;
+    public const ROW_EDIT_URL = 'imageclean/imageclean/deletecategory';
+
     /**
-     * @var string
+     * @var $_urlBuilder
+     */
+    protected $_urlBuilder;
+
+    /**
+     * @var string 
      */
     private $_editUrl;
- 
+
     /**
-     * @param ContextInterface   $context
+     * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
-     * @param UrlInterface       $urlBuilder
-     * @param array              $components
-     * @param array              $data
-     * @param string             $editUrl
+     * @param UrlInterface $urlBuilder
+     * @param array $components
+     * @param array $data
+     * @param string $editUrl
      */
     public function __construct(
         ContextInterface $context,
@@ -51,29 +61,31 @@ class Categorydeleteimage extends Column
         array $components = [],
         array $data = [],
         $editUrl = self::ROW_EDIT_URL
-    ) 
+    )
     {
         $this->_urlBuilder = $urlBuilder;
         $this->_editUrl = $editUrl;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
-	
-	public function prepareDataSource(array $dataSource)
+
+    /**
+     * @param array $dataSource
+     *
+     * @return null|string
+     */
+    public function prepareDataSource(array $dataSource)
     {
-		if (isset($dataSource['data']['items'])) 
-		{
-            foreach ($dataSource['data']['items'] as &$item) 
-			{
-                $name = $this->getData('filename');	
-                if (isset($item['imageclean_id'])) 
-				{
+        if (isset($dataSource['data']['items'])) {
+            foreach ($dataSource['data']['items'] as &$item) {
+                $name = $this->getData('filename');
+                if (isset($item['imageclean_id'])) {
                     $item['actions']['delete'] = [
                         'href' => $this->_urlBuilder->getUrl(
-                            $this->_editUrl, 
+                            $this->_editUrl,
                             ['id' => $item['imageclean_id']]
                         ),
                         'label' => __('Delete'),
-						'confirm' => [
+                        'confirm' => [
                             'title' => __('Delete'),
                             'message' => __('Are you sure you wan\'t to delete a Image?')
                         ]
@@ -81,7 +93,6 @@ class Categorydeleteimage extends Column
                 }
             }
         }
-		
         return $dataSource;
     }
 }

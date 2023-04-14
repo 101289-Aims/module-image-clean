@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -31,41 +32,43 @@ class DeleteCategory extends AbstractImageclean
      */
     protected $_modelImagecleanFactory;
 
-    public function __construct(Context $context, 
-        CategoryImagecleanFactory $modelImagecleanFactory)
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Aimsinfosoft\Imageclean\Model\CategoryImagecleanFactory $modelImagecleanFactory
+     * @param \Magento\Framework\Filesystem\Driver\File $fileDriver
+     */
+    public function __construct(
+        Context $context,
+        CategoryImagecleanFactory $modelImagecleanFactory,
+        \Magento\Framework\Filesystem\Driver\File $fileDriver
+    )
     {
         $this->_modelImagecleanFactory = $modelImagecleanFactory;
-
+        $this->fileDriver = $fileDriver;
         parent::__construct($context);
     }
 
-    public function execute() {
-        if ($this->getRequest()->getParam('id') > 0) 
-		{
-            try 
-			{
-				$mediaPath = BP.'/pub';
-				// var_dump($mediaPath);
-                // die();  
+    /**
+     * Delete Category Image
+     */
+    public function execute()
+    {
+        if ($this->getRequest()->getParam('id') > 0) {
+            try {
+                $mediaPath = BP . '/pub';
                 $model = $this->_modelImagecleanFactory->create();
                 $model->load($this->getRequest()->getParam('id'));
-                // var_dump($model->getFilename());
-                // die();
-				if(file_exists($mediaPath.$model->getFilename())){
-					try{
-						unlink($mediaPath.$model->getFilename());
-					}
-					catch (\Exception $e){
-					}
-				}
-				//exit($mediaPath.$model->getFilename());
+                if ($this->fileDriver->isExists($mediaPath . $model->getFilename())) {
+                    try {
+                        $this->fileDriver->deleteFile($mediaPath . $model->getFilename());
+                    } catch (\Exception $e) {
+                        $this->messageManager->addError($e->getMessage());
+                    }
+                }
                 $model->setId($this->getRequest()->getParam('id'))->delete();
-
                 $this->messageManager->addSuccess(__('Image was successfully deleted'));
                 $this->_redirect('*/*/');
-            } 
-			catch (\Exception $e) 
-			{
+            } catch (\Exception $e) {
                 $this->messageManager->addError($e->getMessage());
                 $this->_redirect('*/*/edit', ['id' => $this->getRequest()->getParam('id')]);
             }

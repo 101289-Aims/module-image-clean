@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -21,15 +22,21 @@
 
 namespace Aimsinfosoft\Imageclean\Controller\Adminhtml\Imageclean;
 
-abstract class AbstractImageclean extends \Magento\Backend\App\Action {
+/**
+ * Abstarct Class AbstractImageclean
+ *
+ * @package Aimsinfosoft\Imageclean\Controller\Adminhtml\Imageclean
+ */
+abstract class AbstractImageclean extends \Magento\Backend\App\Action
+{
 
-    protected function _isAllowed() 
-	{
-		if($this->_authorization->isAllowed('Aimsinfosoft_Imageclean::imageclean')){
-			return $this->_authorization->isAllowed('Aimsinfosoft_Imageclean::imageclean');
-		}
-		if($this->_authorization->isAllowed('Aimsinfosoft_Imageclean::categoryimagecleandata')){
-			return $this->_authorization->isAllowed('Aimsinfosoft_Imageclean::categoryimagecleandata');
-		} 
+    /**
+     * Check Is Allow
+     */
+    protected function _isAllowed()
+    {
+        if ($this->_authorization->isAllowed('Aimsinfosoft_Imageclean::categoryimagecleandata')) {
+            return $this->_authorization->isAllowed('Aimsinfosoft_Imageclean::categoryimagecleandata');
+        }
     }
 }

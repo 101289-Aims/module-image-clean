@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -23,31 +24,46 @@ namespace Aimsinfosoft\Imageclean\Controller\Adminhtml\Imageclean;
 
 class CategoryIndex extends \Magento\Backend\App\Action
 {
+    /**
+     * @var $resultPageFactory
+     */
     protected $resultPageFactory;
-	
-	public function __construct(\Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory
-    ) {
+
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Magento\Framework\View\Result\PageFactory $resultPageFactory
+     * @param \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor
+     */
+    public function __construct(
+        \Magento\Backend\App\Action\Context $context,
+        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
+        \Magento\Framework\App\Request\DataPersistorInterface $dataPersistor
+    )
+    {
         parent::__construct($context);
         $this->resultPageFactory = $resultPageFactory;
+        $this->dataPersistor = $dataPersistor;
     }
-	
-	public function execute()
+
+    /**
+     * Get Category List
+     */
+    public function execute()
     {
         $resultPage = $this->resultPageFactory->create();
         $resultPage->setActiveMenu('Aimsinfosoft_Imageclean::imageclean');
         $resultPage->addBreadcrumb(__('Aimsinfosoft'), __('Aimsinfosoft'));
         $resultPage->addBreadcrumb(__('Imageclean'), __('Imageclean'));
         $resultPage->getConfig()->getTitle()->prepend(__('Categories Images Manager'));
-		
-		$dataPersistor = $this->_objectManager->get('Magento\Framework\App\Request\DataPersistorInterface');
-        $dataPersistor->clear('imageclean_data');
-		
+        $this->dataPersistor->clear('imageclean_data');
         return $resultPage;
     }
-	
-	protected function _isAllowed()
+
+    /**
+     * Check Is Allow
+     */
+    protected function _isAllowed()
     {
-		return $this->_authorization->isAllowed('Aimsinfosoft_Imageclean::categoryimagecleandata');
+        return $this->_authorization->isAllowed('Aimsinfosoft_Imageclean::categoryimagecleandata');
     }
 }

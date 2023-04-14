@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -30,59 +31,68 @@ use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Psr\Log\LoggerInterface;
 
+/**
+ * Class Collection
+ *
+ * @package Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean
+ */
 class Collection extends AbstractCollection
 {
+    /**
+     * @var $_idFieldName
+     */
     protected $_idFieldName = 'imageclean_id';
+
+    /**
+     * @var $total
+     */
     protected $total;
-    public function __construct(EntityFactoryInterface $entityFactory,
+
+    /**
+     * @param EntityFactoryInterface $entityFactory
+     * @param LoggerInterface $logger
+     * @param FetchStrategyInterface $fetchStrategy
+     * @param ManagerInterface $eventManager
+     * @param AdapterInterface $connection
+     * @param AbstractDb $resource
+     *
+     */
+    public function __construct(
+        EntityFactoryInterface $entityFactory,
         LoggerInterface $logger,
         FetchStrategyInterface $fetchStrategy,
         ManagerInterface $eventManager,
         AdapterInterface $connection = null,
-        AbstractDb $resource = null)
+        AbstractDb $resource = null
+    )
     {
+        $this->_logger = $logger;
         parent::__construct($entityFactory, $logger, $fetchStrategy, $eventManager, $connection, $resource);
     }
 
+    /**
+     * @param \Aimsinfosoft\Imageclean\Model\CategoryImageclean
+     */
     public function _construct()
     {
-        $this->_init('Aimsinfosoft\Imageclean\Model\CategoryImageclean','Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean');
+        $this->_init('Aimsinfosoft\Imageclean\Model\CategoryImageclean', 'Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean');
     }
 
+    /**
+     * Get Images
+     */
     public function getImages()
     {
         $array = [];
         try {
-
             $this->setConnection($this->getResource()->getConnection());
             $this->getSelect()->from(['main_table' => $this->getTable('catalog_category_entity_varchar')], '*');
-           
-
-            // $this->getSelect()->joinLeft(array('table_two' => 'catalog_category_entity_varchar_value'),
-   //                                            'main_table.value_id = table_two.value_id');
-            //  $this->addFieldToFilter('table_two.value_id', array('null' => true) );
-
-            //echo '<pre>-----';print_r($imgC->getData());echo '</pre>';die;
-//          echo $this->getSelect()->__toString();  exit;
-         // echo "<pre>";  print_r($this->getData());
-         // die();
             foreach ($this->getData() as $item) {
                 $array[] = $item['value'];
             }
-
-
-            
-          
-         
-
-        }
-        catch (\Exception $e)
-        {
-            $om = \Magento\Framework\App\ObjectManager::getInstance();
-            $storeManager = $om->get('Psr\Log\LoggerInterface');
-            $storeManager->info($e->getMessage());
+        } catch (\Exception $e) {
+            $this->_logger->critical('Error message', ['exception' => $e]);
         }
         return $array;
     }
-
 }

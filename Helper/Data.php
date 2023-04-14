@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -21,177 +22,103 @@
 
 namespace Aimsinfosoft\Imageclean\Helper;
 
-use Aimsinfosoft\Imageclean\Model\ImagecleanFactory;
 use Aimsinfosoft\Imageclean\Model\CategoryImagecleanFactory;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\DB\Exception;
+use Magento\Framework\Filesystem\Driver\File as DriverFile;
 
-class Data extends AbstractHelper {
+/**
+ * Class Data
+ *
+ * @package Aimsinfosoft\Imageclean\Helper
+ */
+class Data extends AbstractHelper
+{
     /**
      * @var ImagecleanFactory
      */
-    protected $_modelImagecleanFactory;
-	
-	 protected $_modelcategoryImagecleanFactory;
+    protected $_modelcategoryImagecleanFactory;
 
+    /**
+     * @var $result
+     */
+    protected $result = [];
 
-    public function __construct(Context $context, 
-        ImagecleanFactory $modelImagecleanFactory,
-		CategoryImagecleanFactory $modelcategoryImagecleanFactory)
+    /**
+     * @var $valdir
+     */
+    public $valdir = [];
+
+    /**
+     * @var $_logger
+     */
+    protected $_logger;
+
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Aimsinfosoft\Imageclean\Model\CategoryImagecleanFactory $modelcategoryImagecleanFactory
+     * @param \Psr\Log\LoggerInterface $logger
+     * @param Magento\Framework\Filesystem\Driver\File $driverFile
+     */
+    public function __construct(
+        Context $context,
+        CategoryImagecleanFactory $modelcategoryImagecleanFactory,
+        \Psr\Log\LoggerInterface $logger,
+        DriverFile $driverFile
+    )
     {
-        $this->_modelImagecleanFactory = $modelImagecleanFactory;
-		$this->_modelcategoryImagecleanFactory = $modelcategoryImagecleanFactory;
+        $this->_modelcategoryImagecleanFactory = $modelcategoryImagecleanFactory;
+        $this->_logger = $logger;
+        $this->driverFile = $driverFile;
         parent::__construct($context);
     }
 
-
-    protected $result = [];
-    protected $_mainTable;
-    public $valdir = [];
-
-    public function listDirectories($path) 
-	{
-		$pathOfMedia = BP . DIRECTORY_SEPARATOR . 'pub' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'product';
-		
-        if (is_dir($path)) 
-		{
-            if ($dir = opendir($path)) 
-			{
-                while (($entry = readdir($dir)) !== false) 
-				{
-                    if (preg_match('/^\./', $entry) != 1) 
-					{
-                        if (is_dir($path . DIRECTORY_SEPARATOR . $entry) && !in_array($entry, ['cache', 'watermark', 'placeholder'])) 
-						{
-                            $this->listDirectories($path.DIRECTORY_SEPARATOR.$entry);
-                        } 
-						elseif (!in_array($entry, ['cache', 'watermark']) && (strpos($entry, '.') != 0)) 
-						{
-                            //$this->result[] = substr($path.DIRECTORY_SEPARATOR.$entry,25);
-							$fullpath = $path.DIRECTORY_SEPARATOR.$entry;
-							$finalPath = str_replace($pathOfMedia,"",$fullpath);
-							$this->result[] = $finalPath;
+    public function listCatelogDirectories($path)
+    {
+        $pathOfMedia = BP . DIRECTORY_SEPARATOR . 'pub' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'category';
+        if ($this->driverFile->isDirectory($path)) {
+            if ($dir = opendir($path)) {
+                while (($entry = readdir($dir)) !== false) {
+                    if (preg_match('/^\./', $entry) != 1) {
+                        if ($this->driverFile->isDirectory($path . DIRECTORY_SEPARATOR . $entry) && !in_array($entry, ['cache', 'watermark', 'placeholder'])) {
+                            $this->listCatelogDirectories($path . DIRECTORY_SEPARATOR . $entry);
+                        } elseif (!in_array($entry, ['cache', 'watermark']) && (strpos($entry, '.') !== 0)) {
+                            $fullpath = $path . DIRECTORY_SEPARATOR . $entry;
+                            $finalPath = str_replace($pathOfMedia, "", $fullpath);
+                            $this->result[] = $finalPath;
                         }
                     }
                 }
                 closedir($dir);
             }
         }
-
         return $this->result;
     }
 
-  
-    public function compareList() 
-	{
-        $valores = $this->_modelImagecleanFactory->create()->getCollection()->getImages();
-        $pepe = BP . DIRECTORY_SEPARATOR . 'pub' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR .'catalog' . DIRECTORY_SEPARATOR . 'product';
-        $leer = $this->listDirectories($pepe);
-        $model = $this->_modelImagecleanFactory->create();
-		$arr_data = array();
-		if(!empty($valores)){
-			foreach ($valores as &$str) {
-					$arr_data[] = ltrim($str, '//');
-			}
-		}
-		
-        foreach ($leer as $item) 
-		{
-            try 
-			{
-                $item = str_replace('\\', '/', $item);
-				$item = ltrim($item, '/');
-				
-                if (in_array($item, $arr_data)) 
-				{
-					$filename = substr(strrchr($item, "/"), 1);
-                    $valdir[]['filename'] = $item;
-                    $model->setData(['filename' => $item ,'imageurl' => $filename ])->setId(null);
-                    $model->save();
-                }
-            } 
-			catch (\Exception $e) 
-			{
-				$om = \Magento\Framework\App\ObjectManager::getInstance();
-				$storeManager = $om->get('Psr\Log\LoggerInterface');
-				$storeManager->info($e->getMessage());
-			} 
-        }
-    }
-	
-	
-	
-	 public function listCatelogDirectories($path) 
-	{
-		$pathOfMedia = BP . DIRECTORY_SEPARATOR . 'pub' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'category';
-		
-        if (is_dir($path)) 
-		{
-            if ($dir = opendir($path)) 
-			{
-                while (($entry = readdir($dir)) !== false) 
-				{
-                    if (preg_match('/^\./', $entry) != 1) 
-					{
-                        if (is_dir($path . DIRECTORY_SEPARATOR . $entry) && !in_array($entry, ['cache', 'watermark', 'placeholder'])) 
-						{
-                            $this->listCatelogDirectories($path.DIRECTORY_SEPARATOR.$entry);
-                        } 
-						elseif (!in_array($entry, ['cache', 'watermark']) && (strpos($entry, '.') != 0)) 
-						{
-                            //$this->result[] = substr($path.DIRECTORY_SEPARATOR.$entry,25);
-							$fullpath = $path.DIRECTORY_SEPARATOR.$entry;
-							$finalPath = str_replace($pathOfMedia,"",$fullpath);
-							$this->result[] = $finalPath;
-                        }
-                    }
-                }
-                closedir($dir);
-            }
-        }
-
-        return $this->result;
-    }
-	
-	public function compareCatelogList() 
-	{
-		
+    /**
+     * Compare Catelog List
+     */
+    public function compareCatelogList()
+    {
         $valores = $this->_modelcategoryImagecleanFactory->create()->getCollection()->getImages();
         $pepe = BP . DIRECTORY_SEPARATOR . 'pub' . DIRECTORY_SEPARATOR . 'media' . DIRECTORY_SEPARATOR . 'catalog' . DIRECTORY_SEPARATOR . 'category';
-		$pub = '/media/catalog/category';
+        $pub = '/media/catalog/category';
         $leer = $this->listCatelogDirectories($pepe);
-
-
-
-
         $model = $this->_modelcategoryImagecleanFactory->create();
-        foreach ($leer as $item) 
-		{
-            try 
-			{
+        foreach ($leer as $item) {
+            try {
                 $item = str_replace('\\', '/', $item);
-				//$item = substr_replace($item, '//', 0 , 1);
-				$item  = $pub . $item;
-
-            
-                if (!in_array($item, $valores)) 
-				{   
-					$filename = substr(strrchr($item, "/"), 1);
+                $item = $pub . $item;
+                if (!in_array($item, $valores)) {
+                    $filename = substr(strrchr($item, "/"), 1);
                     $valdir[]['filename'] = $item;
-                    $model->setData(['filename' => $item ,'imageurl' => $filename ])->setId(null);
+                    $model->setData(['filename' => $item, 'imageurl' => $filename])->setId(null);
                     $model->save();
                 }
-            } 
-			catch (\Exception $e) 
-			{
-				$om = \Magento\Framework\App\ObjectManager::getInstance();
-				$storeManager = $om->get('Psr\Log\LoggerInterface');
-				$storeManager->info($e->getMessage());
-			} 
-			
+            } catch (\Exception $e) {
+                $this->_logger->critical('Error message', ['exception' => $e]);
+            }
         }
-	
     }
-
 }

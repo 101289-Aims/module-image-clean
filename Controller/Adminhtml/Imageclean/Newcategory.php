@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -31,15 +32,24 @@ class Newcategory extends AbstractImageclean
      */
     protected $_helperData;
 
-    public function __construct(Context $context, 
-        HelperData $helperData)
+    /**
+     * @param \Magento\Framework\App\Helper\Context $context
+     * @param \Aimsinfosoft\Imageclean\Helper\Data $helperData
+     */
+    public function __construct(
+        Context $context,
+        HelperData $helperData
+    )
     {
         $this->_helperData = $helperData;
-
         parent::__construct($context);
     }
 
-    public function execute() {
+    /**
+     * Get Category List
+     */
+    public function execute()
+    {
         $this->_helperData->compareCatelogList();
         $this->_redirect('*/*/categoryindex');
     }

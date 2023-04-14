@@ -20,47 +20,37 @@
  * @license     https://www.aimsinfosoft.com/LICENSE.txt
  */ -->
 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
 
-  <type name="Aimsinfosoft\Imageclean\Model\ResourceModel\Imageclean\Grid\Collection">
-	  <arguments>
-		  <argument name="mainTable" xsi:type="string">imageclean</argument>
-		  <argument name="eventPrefix" xsi:type="string">imageclean_imageclean_grid_collection</argument>
-          <argument name="eventObject" xsi:type="string">imageclean_imageclean_grid_collection</argument>
-		  <argument name="resourceModel" xsi:type="string">Aimsinfosoft\Imageclean\Model\ResourceModel\Imageclean</argument>
-	  </arguments>
-   </type>
-
-   <type name="Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean\Grid\Collection">
-	  <arguments>
-		  <argument name="mainTable" xsi:type="string">categoryimageclean</argument>
-		  <argument name="eventPrefix" xsi:type="string">imageclean_imageclean_categorygrid_collection</argument>
-          <argument name="eventObject" xsi:type="string">imageclean_imageclean_categorygrid_collection</argument>
-		  <argument name="resourceModel" xsi:type="string">Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean</argument>
-	  </arguments>
-   </type>
-
-   <virtualType name="Aimsinfosoft\Imageclean\Model\ResourceModel\Imageclean\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
-	  <arguments>
-		  <argument name="mainTable" xsi:type="string">imageclean</argument>
-		  <argument name="resourceModel" xsi:type="string">Aimsinfosoft\Imageclean\Model\ResourceModel\Imageclean</argument>
-	  </arguments>
-  </virtualType>
-  <virtualType name="Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean\Grid\Collection" type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
-	  <arguments>
-		  <argument name="mainTable" xsi:type="string">categoryimageclean</argument>
-		  <argument name="resourceModel" xsi:type="string">Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean</argument>
-	  </arguments>
-  </virtualType>
-
-  <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+    <type name="Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean\Grid\Collection">
         <arguments>
-		  <argument name="collections" xsi:type="array">
-			  <item name="imageclean_imageclean_grid_data_source" xsi:type="string">Aimsinfosoft\Imageclean\Model\ResourceModel\Imageclean\Grid\Collection</item>
-		  </argument>
-		  <argument name="collections" xsi:type="array">
-			  <item name="imageclean_imageclean_categorygrid_data_source" xsi:type="string">Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean\Grid\Collection</item>
-		  </argument>
-	  </arguments>
-  </type>
+            <argument name="mainTable" xsi:type="string">categoryimageclean</argument>
+            <argument name="eventPrefix" xsi:type="string">imageclean_imageclean_categorygrid_collection</argument>
+            <argument name="eventObject" xsi:type="string">imageclean_imageclean_categorygrid_collection</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean
+            </argument>
+        </arguments>
+    </type>
+
+    <virtualType name="Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean\Grid\Collection"
+                 type="Magento\Framework\View\Element\UiComponent\DataProvider\SearchResult">
+        <arguments>
+            <argument name="mainTable" xsi:type="string">categoryimageclean</argument>
+            <argument name="resourceModel" xsi:type="string">
+                Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="imageclean_imageclean_categorygrid_data_source" xsi:type="string">
+                    Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean\Grid\Collection
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>

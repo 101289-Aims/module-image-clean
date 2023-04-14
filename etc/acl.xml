@@ -19,16 +19,16 @@
  * @copyright   Copyright (c) Aimsinfosoft (https://www.aimsinfosoft.com)
  * @license     https://www.aimsinfosoft.com/LICENSE.txt
  */ -->
- 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
-  <acl>
-    <resources>
-      <resource id="Magento_Backend::admin">
-		<resource id="Aimsinfosoft_Imageclean::imageclean" title="Image Clean">
-          	<resource id="Aimsinfosoft_Imageclean::imagecleandata" title="Product Images Manager"/>
-			<resource id="Aimsinfosoft_Imageclean::categoryimagecleandata" title="Category Images Manager"/>
-        </resource>
-      </resource>
-    </resources>
-  </acl>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Aimsinfosoft_Imageclean::imageclean" title="Image Clean">
+                    <resource id="Aimsinfosoft_Imageclean::categoryimagecleandata" title="Category Images Manager"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
 </config>

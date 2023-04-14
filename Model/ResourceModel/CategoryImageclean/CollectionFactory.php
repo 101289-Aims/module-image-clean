@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -21,18 +22,23 @@
 
 namespace Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean;
 
+/**
+ * Class CollectionFactory
+ *
+ * @package Aimsinfosoft\Imageclean\Model\ResourceModel\CategoryImageclean
+ */
 class CollectionFactory
 {
     /**
      * Object Manager instance
      *
-     * @var \Magento\Framework\ObjectManagerInterface
+     * @var \Magento\Framework\ObjectManagerInterface $objectManager
      */
     private $objectManager = null;
     /**
      * Instance name to create
      *
-     * @var string
+     * @var string $instanceName
      */
     private $instanceName = null;
 
@@ -45,15 +51,17 @@ class CollectionFactory
     public function __construct(
         \Magento\Framework\ObjectManagerInterface $objectManager,
         $instanceName = '\\Aimsinfosoft\\Imageclean\\Model\\ResourceModel\\CategoryImageclean\\Collection'
-    ) {
+    )
+    {
         $this->objectManager = $objectManager;
         $this->instanceName = $instanceName;
     }
 
     /**
-     * {@inheritdoc}
+     * @var array
+     * @param $data[]
      */
-    public function create(array $data = array())
+    public function create($data = [])
     {
         return $this->objectManager->create($this->instanceName, $data);
     }

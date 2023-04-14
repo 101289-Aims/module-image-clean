@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -23,11 +24,14 @@ namespace Aimsinfosoft\Imageclean\Model\ResourceModel;
 
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 
-class CategoryImageclean extends AbstractDb {
+class CategoryImageclean extends AbstractDb
+{
 
-    protected function _construct() 
-	{
+    /**
+     * Model constructor
+     */
+    protected function _construct()
+    {
         $this->_init('categoryimageclean', 'imageclean_id');
     }
-
 }

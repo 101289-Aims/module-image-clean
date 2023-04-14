@@ -2,7 +2,7 @@
     "name": "aimsinfosoft/imageclean",
     "description": "Aimsinfosoft Image Clean Extension",
     "type": "magento2-module",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "license": [
         "OSL-3.0",
         "AFL-3.0"
@@ -14,6 +14,10 @@
             "homepage": "https://aimsinfosoft.com/"
         }
     ],
+    "require": {
+        "php": "~8.1.0||~8.2.0",
+        "Aimsinfosoft/Base": "~1.0.0"
+      },
     "autoload": {
         "files": [
             "registration.php"

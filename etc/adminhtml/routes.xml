@@ -19,11 +19,12 @@
  * @copyright   Copyright (c) Aimsinfosoft (https://www.aimsinfosoft.com)
  * @license     https://www.aimsinfosoft.com/LICENSE.txt
  */ -->
- 
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
-  <router id="admin">
-    <route id="imageclean" frontName="imageclean">
-      <module name="Aimsinfosoft_Imageclean" after="Magento_Backend"/>
-    </route>
-  </router>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route id="imageclean" frontName="imageclean">
+            <module name="Aimsinfosoft_Imageclean" after="Magento_Backend"/>
+        </route>
+    </router>
 </config>

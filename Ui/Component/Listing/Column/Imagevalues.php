@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Aimsinfosoft
  *
@@ -27,11 +28,28 @@ use Magento\Ui\Component\Listing\Columns\Column;
 use Magento\Framework\UrlInterface;
 use Magento\Store\Model\StoreManagerInterface;
 
+/**
+ * Class Imagevalues
+ *
+ * @package Aimsinfosoft\Imageclean\Ui\Component\Listing\Column
+ */
 class Imagevalues extends Column
 {
-	const ALT_FIELD = 'image';
-	protected $storeManager;
+    public const ALT_FIELD = 'image';
 
+    /**
+     * @var $storeManager
+     */
+    protected $storeManager;
+
+    /**
+     * @param ContextInterface $context
+     * @param UiComponentFactory $uiComponentFactory
+     * @param UrlInterface $urlBuilder
+     * @param StoreManagerInterface $storeManager
+     * @param array $components
+     * @param array $data
+     */
     public function __construct(
         ContextInterface $context,
         UiComponentFactory $uiComponentFactory,
@@ -39,30 +57,28 @@ class Imagevalues extends Column
         StoreManagerInterface $storeManager,
         array $components = [],
         array $data = []
-    ) {
+    )
+    {
         $this->storeManager = $storeManager;
         $this->urlBuilder = $urlBuilder;
         parent::__construct($context, $uiComponentFactory, $components, $data);
     }
 
-	public function prepareDataSource(array $dataSource)
+    /**
+     * @param array $dataSource
+     *
+     * @return null|string
+     */
+    public function prepareDataSource(array $dataSource)
     {
-		$_objectManager = \Magento\Framework\App\ObjectManager::getInstance();
-		$storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
-		$currentStore = $storeManager->getStore();
-		$mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
-
-        if(isset($dataSource['data']['items']))
-		{
+        $currentStore = $this->storeManager->getStore();
+        $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+        if (isset($dataSource['data']['items'])) {
             $fieldName = $this->getData('name');
-
-            
-            foreach($dataSource['data']['items'] as & $item)
-			{
+            foreach ($dataSource['data']['items'] as &$item) {
                 $item[$fieldName] = $item['imageurl'];
             }
         }
-
         return $dataSource;
     }
 
